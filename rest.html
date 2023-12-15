@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant App</title>
+</head>
+<style>
+   body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+#menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.menu-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#order-summary {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-item {
+    margin-bottom: 5px;
+}
+
+.total {
+    font-weight: bold;
+}
+ 
+</style>
+<body>
+    <div class="container">
+        <h1>Restaurant Menu</h1>
+        <div id="menu">
+        </div>
+        <h2>Order Summary</h2>
+        <ul id="order-summary"></ul>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const menu = document.getElementById("menu");
+    const orderSummary = document.getElementById("order-summary");
+
+    // Sample menu items
+    const items = [
+        { name: "Burger", price: 5.99 },
+        { name: "Pizza", price: 8.99 },
+        { name: "Salad", price: 4.99 },
+        { name: "Shawarma", price: 7.90},
+        { name: "Egg Roll", price: 5.79},
+        { name: "Dormino", price: 2.88},
+        { name: "Fruits", price: 6.99},
+        { name: "Puff-Puff", price: 2.50},
+        {name: "Ice-Cream", price: 2.10},
+        {name: "Rice", price: 3.20},
+
+        new Promise((resolve, reject) => {
+          let condition = false;
+          if(condition) {
+            resolve('data')
+          } else {
+            reject('error')
+        };
+    }),
+    ];
+    // Dynamically populate the menu
+    items.forEach(item => {
+        const menuItem = document.createElement("div");
+        menuItem.className = "menu-item";
+        menuItem.innerHTML = `<div>${item.name}</div><div>$${item.price.toFixed(2)}</div>`;
+        menuItem.addEventListener("click", () => addToOrder(item));
+        menu.appendChild(menuItem);
+    });
+
+    // Function to add items to the order
+    function addToOrder(item) {
+        const orderItem = document.createElement("li");
+        orderItem.className = "order-item";
+        orderItem.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+        orderSummary.appendChild(orderItem);
+
+        // Update total
+        updateTotal();
+    }
+
+    // Function to update the order total
+    function updateTotal() {
+        const orderItems = document.getElementsByClassName("order-item");
+        let total = 0;
+
+        for (let i = 0; i < orderItems.length; i++) {
+            const price = parseFloat(orderItems[i].textContent.split("$")[1]);
+            total += price;
+        }
+
+        const totalElement = document.createElement("li");
+        totalElement.className = "total";
+        totalElement.textContent = `Total: $${total.toFixed(2)}`;
+
+        // Remove previous total if it exists
+        const previousTotal = document.querySelector(".total");
+        if (previousTotal) {
+            orderSummary.removeChild(previousTotal);
+        }
+
+        orderSummary.appendChild(totalElement);
+    }
+});   
+ </script>
+</body>
+</html>
